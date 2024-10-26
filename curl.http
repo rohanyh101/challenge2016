@@ -1,0 +1,71 @@
+# check health
+curl --location --request GET 'http://localhost:8080/health' \
+    --header 'Content-Type: application/json'
+
+###
+
+# get distributors
+curl --location --request GET 'http://localhost:8080/distributors/' \
+ --header 'Content-Type: application/json' \
+
+###
+
+# add distributor 1
+curl --location --request POST 'http://localhost:8080/distributors/add' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "DISTRIBUTOR1",
+        "includes": ["IN", "US"],
+        "excludes": ["KA,IN", "CENAI,TN,IN"],
+        "parent_distributor_id": ""
+    }'
+
+###
+
+# add distributor 2
+curl --location --request POST 'http://localhost:8080/distributors/add' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "DISTRIBUTOR2",
+        "includes": ["IN"],
+        "excludes": ["TN,IN"],
+        "parent_distributor_id": "41d05a85"
+    }'
+
+###
+
+# add distributor 3
+curl --location --request POST 'http://localhost:8080/distributors/add' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "DISTRIBUTOR3",
+        "includes": ["HBALI,KA,IN"],
+        "excludes": [],
+        "parent_distributor_id": "e5f69807"
+    }'
+
+###
+
+# check distributor permissions against locations
+curl --location --request GET 'http://localhost:8080/distributors/28a78bc3/check' \
+ --header 'Content-Type: application/json' \
+ --data-raw '{
+        "locations": ["CENAI,TN,IN", "YELDU,TG,IN", "WAIRN,UP,IN", "HBALI,KA,IN", "HUBLE,RP,DE", "US", "TN,IN"]
+    }'
+
+###
+
+# get distributor by id
+curl --location --request GET 'http://localhost:8080/distributors/2471f887' \
+ --header 'Content-Type: application/json' \
+
+###
+
+# update distributor
+curl --location --request PUT 'http://localhost:8080/distributors/2471f887' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "demo1",
+        "includes": ["US"],
+        "excludes": ["HUBLE,RP,DE"]
+    }'
